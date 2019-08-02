@@ -4,8 +4,12 @@ const print = console.log;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const gameFrame = 1000 / 60;
-let firstScore = 0;
-let secondScore = 0;
+const easy_button = document.getElementById('easy');
+const normal_button = document.getElementById('normal');
+const hard_button = document.getElementById('hard');
+const btnsDiv_div = document.querySelector('.btns-div');
+let userScore = 0;
+let computerScore = 0;
 
 class Ball {
     constructor() {
@@ -23,7 +27,8 @@ class Paddle {
         this.x = x;
         this.y = y;
         this.width = 10;
-        this.height = 120;
+        this.height = 200;
+        this.ySpeed = 20;
     }
 }
 
@@ -62,32 +67,38 @@ function fillBall(x, y, size, color) {
     ctx.fill();
 }
 
-function draw() {
-    fill(0, 0, canvas.width, canvas.height, 'black');
-    fill(paddle1.x, paddle1.y, paddle1.width, paddle1.height, 'white');
-    fill(paddle2.x, paddle2.y, paddle2.width, paddle2.height, 'white');
-    font('20px sans-seris');
-    fillText(firstScore, (canvas.width / 2) - (canvas.width / 4), 100);
-    fillText(secondScore, (canvas.width / 2) + (canvas.width / 4), 100);
-    fillBall(ball.x, ball.y, ball.width, 'white');
-    drawLine(canvas.width / 2, 0, canvas.width / 2, canvas.height);
-}
-
 function resetBall() {
     ball.x = canvas.width / 2;
     ball.y = canvas.height / 2;
 }
 
+function draw() {
+    fill(0, 0, canvas.width, canvas.height, 'black');
+    fill(paddle1.x, paddle1.y, paddle1.width, paddle1.height - 100, 'white');
+    fill(paddle2.x, paddle2.y, paddle2.width, paddle2.height, 'white');
+    font('20px sans-seris');
+    fillText(userScore, (canvas.width / 2) - (canvas.width / 4), 100);
+    fillText(computerScore, (canvas.width / 2) + (canvas.width / 4), 100);
+    fillBall(ball.x, ball.y, ball.width, 'white');
+    drawLine(canvas.width / 2, 0, canvas.width / 2, canvas.height);
+}
+
+canvas.onmousemove = (e) => {
+    paddle1.y = e.y - (paddle1.height / 2);
+    //paddle2.y = e.y - (paddle2.height / 2);
+}
+
 function move() {
     ball.x += ball.xSpeed;
     ball.y += ball.ySpeed;
+    paddle2.y += paddle2.ySpeed;
 
     if (ball.x > canvas.width - paddle2.width) {
         if (ball.y > paddle2.y && ball.y < paddle2.y + paddle2.height) {
             ball.xSpeed = -ball.xSpeed;
         } else {
-            firstScore++;
-            if (firstScore === 10) {
+            userScore++;
+            if (userScore === 30) {
                 clearInterval(game);
                 alert('Game is Over');
             }
@@ -99,8 +110,8 @@ function move() {
         if (ball.y > paddle1.y && ball.y < paddle1.y + paddle1.height) {
             ball.xSpeed = -ball.xSpeed;
         } else {
-            secondScore++;
-            if (secondScore === 10) {
+            computerScore++;
+            if (computerScore === 30) {
                 clearInterval(game);
                 alert('Game is Over');
             }
@@ -115,14 +126,33 @@ function move() {
     if (ball.y > canvas.height) {
         ball.ySpeed = -ball.ySpeed;
     }
-}
-
-canvas.onmousemove = (e) => {
-    paddle1.y = e.y - (paddle1.height / 2);
-    paddle2.y = e.y - (paddle2.height / 2);
+    //paddle2 movement
+    if (paddle2.y + paddle2.height > canvas.height) {
+        paddle2.ySpeed = -paddle2.ySpeed;
+    }
+    if (paddle2.y < 0) {
+        paddle2.ySpeed = -paddle2.ySpeed;
+    }
 }
 
 const game = setInterval(() => {
     draw();
     move();
 }, gameFrame);
+
+easy_button.onclick = () => {
+    paddle2.ySpeed = 10;
+    ball.xSpeed = 10;
+}
+
+normal_button.onclick = () => {
+    paddle2.ySpeed = 20;
+    ball.xSpeed = 10;
+}
+
+hard_button.onclick = () => {
+    paddle2.ySpeed = 80;
+    ball.xSpeed = 20;
+}
+
+btnsDiv_div.style.left = canvas.width / 4 - 20 + 'px';
