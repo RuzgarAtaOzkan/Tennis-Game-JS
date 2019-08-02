@@ -4,3 +4,30 @@
     box-sizing: border-box;
     outline: none;
 }
+
+div {
+    position: absolute;
+}
+
+button {
+    margin: 10px 30px;
+    border: none;
+    padding: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#easy {
+    color: #009c0a;
+}
+
+#normal {
+    color: #0077cc;
+}
+
+#hard {
+    color: #ff0a0a;
+}
