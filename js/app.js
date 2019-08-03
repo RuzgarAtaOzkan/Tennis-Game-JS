@@ -103,7 +103,7 @@ function move() {
             userScore++;
             if (userScore === 30) {
                 clearInterval(game);
-                alert('Game is Over');
+                alert('Game is Over. You won!!!');
             }
             resetBall();
         }
@@ -116,7 +116,7 @@ function move() {
             computerScore++;
             if (computerScore === 30) {
                 clearInterval(game);
-                alert('Game is Over');
+                alert('Game is Over. You lost :(');
             }
             resetBall();
         }
