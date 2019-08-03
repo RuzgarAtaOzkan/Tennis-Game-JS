@@ -8,13 +8,15 @@ const easy_button = document.getElementById('easy');
 const normal_button = document.getElementById('normal');
 const hard_button = document.getElementById('hard');
 const btnsDiv_div = document.querySelector('.btns-div');
+const ballXSpawn = [canvas.width / 4 + 50, canvas.width / 2 - 100, canvas.width / 3, canvas.width / 2];
+const ballYSpawn = [canvas.height / 3, canvas.height / 2 + 70, canvas.height / 4 + 50, canvas.height / 2];
 let userScore = 0;
 let computerScore = 0;
 
 class Ball {
     constructor() {
-        this.x = Math.random() * 800;
-        this.y = Math.random() * 600;
+        this.x = canvas.width / 2;
+        this.y = canvas.height / 2;
         this.width = 10;
         this.height = 10;
         this.xSpeed = 10;
@@ -23,11 +25,11 @@ class Ball {
 }
 
 class Paddle {
-    constructor(x, y) {
+    constructor(x, y, height) {
         this.x = x;
         this.y = y;
         this.width = 10;
-        this.height = 200;
+        this.height = 100;
         this.ySpeed = 20;
     }
 }
@@ -37,6 +39,7 @@ const paddleYPosition = canvas.height - (canvas.height / 2) - (new Paddle().heig
 const ball = new Ball();
 const paddle1 = new Paddle(0, paddleYPosition);
 const paddle2 = new Paddle(paddle2XPosition, paddleYPosition);
+paddle2.height = paddle2.height * 2;
 
 function fill(x, y, width, height, color) {
     ctx.fillStyle = color;
@@ -68,13 +71,13 @@ function fillBall(x, y, size, color) {
 }
 
 function resetBall() {
-    ball.x = canvas.width / 2;
-    ball.y = canvas.height / 2;
+    ball.x = ballXSpawn[Math.floor(Math.random() * 4)];
+    ball.y = ballYSpawn[Math.floor(Math.random() * 4)];
 }
 
 function draw() {
     fill(0, 0, canvas.width, canvas.height, 'black');
-    fill(paddle1.x, paddle1.y, paddle1.width, paddle1.height - 100, 'white');
+    fill(paddle1.x, paddle1.y, paddle1.width, paddle1.height, 'white');
     fill(paddle2.x, paddle2.y, paddle2.width, paddle2.height, 'white');
     font('20px sans-seris');
     fillText(userScore, (canvas.width / 2) - (canvas.width / 4), 100);
@@ -135,11 +138,6 @@ function move() {
     }
 }
 
-const game = setInterval(() => {
-    draw();
-    move();
-}, gameFrame);
-
 easy_button.onclick = () => {
     paddle2.ySpeed = 10;
     ball.xSpeed = 10;
@@ -156,3 +154,8 @@ hard_button.onclick = () => {
 }
 
 btnsDiv_div.style.left = canvas.width / 4 - 20 + 'px';
+
+const game = setInterval(() => {
+    draw();
+    move();
+}, gameFrame);
