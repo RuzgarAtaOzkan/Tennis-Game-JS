@@ -6,13 +6,13 @@ const ctx = canvas.getContext('2d');
 const easy_button = document.getElementById('easy');
 const normal_button = document.getElementById('normal');
 const hard_button = document.getElementById('hard');
-const btnsDiv_div = document.querySelector('.btns-div');
+const btnsDiv_div = document.querySelector('.btn-div');
 const ballXSpawn = [canvas.width / 4 + 50, canvas.width / 2 - 100, canvas.width / 3, canvas.width / 2];
 const ballYSpawn = [canvas.height / 3, canvas.height / 2 + 70, canvas.height / 4 + 50, canvas.height / 2];
 const gameFrame = 1000 / 60;
 let userScore = 0;
 let computerScore = 0;
-btnsDiv_div.style.left = canvas.width / 4 - 20 + 'px';
+btnsDiv_div.style.left = (canvas.width / 4) - 20 + 'px';
 
 class Ball {
     constructor() {
@@ -139,27 +139,33 @@ function easy() {
     paddle2.ySpeed = 10;
     ball.xSpeed = 10;
     easy_button.removeEventListener('click', easy);
-    setTimeout(() => {
-        easy_button.addEventListener('click', easy);
-    }, 4000);
+    normal_button.removeEventListener('click', normal);
+    hard_button.removeEventListener('click', hard);
+    setTimeout(() => easy_button.addEventListener('click', easy), 4000);
+    setTimeout(() => normal_button.addEventListener('click', normal), 4000);
+    setTimeout(() => hard_button.addEventListener('click', hard), 4000);
 }
 
 function normal() {
     paddle2.ySpeed = 20;
     ball.xSpeed = 10;
+    easy_button.removeEventListener('click', easy);
     normal_button.removeEventListener('click', normal);
-    setTimeout(() => {
-        normal_button.addEventListener('click', normal);
-    }, 4000);
+    hard_button.removeEventListener('click', hard);
+    setTimeout(() => easy_button.addEventListener('click', easy), 4000);
+    setTimeout(() => normal_button.addEventListener('click', normal), 4000);
+    setTimeout(() => hard_button.addEventListener('click', hard), 4000);
 }
 
 function hard() {
     paddle2.ySpeed = 80;
     ball.xSpeed = 20;
+    easy_button.removeEventListener('click', easy);
+    normal_button.removeEventListener('click', normal);
     hard_button.removeEventListener('click', hard);
-    setTimeout(() => {
-        hard_button.addEventListener('click', hard);
-    }, 4000);
+    setTimeout(() => easy_button.addEventListener('click', easy), 4000);
+    setTimeout(() => normal_button.addEventListener('click', normal), 4000);
+    setTimeout(() => hard_button.addEventListener('click', hard), 4000);
 }
 
 easy_button.addEventListener('click', easy);
