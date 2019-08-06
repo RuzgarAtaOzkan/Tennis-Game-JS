@@ -1,17 +1,18 @@
-'use strict';
+"use strict";
 
 const print = console.log;
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const gameFrame = 1000 / 60;
 const easy_button = document.getElementById('easy');
 const normal_button = document.getElementById('normal');
 const hard_button = document.getElementById('hard');
 const btnsDiv_div = document.querySelector('.btns-div');
 const ballXSpawn = [canvas.width / 4 + 50, canvas.width / 2 - 100, canvas.width / 3, canvas.width / 2];
 const ballYSpawn = [canvas.height / 3, canvas.height / 2 + 70, canvas.height / 4 + 50, canvas.height / 2];
+const gameFrame = 1000 / 60;
 let userScore = 0;
 let computerScore = 0;
+btnsDiv_div.style.left = canvas.width / 4 - 20 + 'px';
 
 class Ball {
     constructor() {
@@ -25,7 +26,7 @@ class Ball {
 }
 
 class Paddle {
-    constructor(x, y, height) {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
         this.width = 10;
@@ -86,16 +87,15 @@ function draw() {
     drawLine(canvas.width / 2, 0, canvas.width / 2, canvas.height);
 }
 
-canvas.onmousemove = (e) => {
+canvas.addEventListener('mousemove' ,(e) => {
     paddle1.y = e.y - (paddle1.height / 2);
     //paddle2.y = e.y - (paddle2.height / 2);
-}
+});
 
 function move() {
     ball.x += ball.xSpeed;
     ball.y += ball.ySpeed;
     paddle2.y += paddle2.ySpeed;
-
     if (ball.x > canvas.width - paddle2.width) {
         if (ball.y > paddle2.y && ball.y < paddle2.y + paddle2.height) {
             ball.xSpeed = -ball.xSpeed;
@@ -108,7 +108,6 @@ function move() {
             resetBall();
         }
     }
-    
     if (ball.x < 10) {
         if (ball.y > paddle1.y && ball.y < paddle1.y + paddle1.height) {
             ball.xSpeed = -ball.xSpeed;
@@ -121,15 +120,13 @@ function move() {
             resetBall();
         }
     }
-
     if (ball.y < 0) {
         ball.ySpeed = -ball.ySpeed;
     }
-
     if (ball.y > canvas.height) {
         ball.ySpeed = -ball.ySpeed;
     }
-    //paddle2 movement
+    //paddle2 movement rules
     if (paddle2.y + paddle2.height > canvas.height) {
         paddle2.ySpeed = -paddle2.ySpeed;
     }
@@ -138,22 +135,36 @@ function move() {
     }
 }
 
-easy_button.onclick = () => {
+function easy() {
     paddle2.ySpeed = 10;
     ball.xSpeed = 10;
+    easy_button.removeEventListener('click', easy);
+    setTimeout(() => {
+        easy_button.addEventListener('click', easy);
+    }, 4000);
 }
 
-normal_button.onclick = () => {
+function normal() {
     paddle2.ySpeed = 20;
     ball.xSpeed = 10;
+    normal_button.removeEventListener('click', normal);
+    setTimeout(() => {
+        normal_button.addEventListener('click', normal);
+    }, 4000);
 }
 
-hard_button.onclick = () => {
+function hard() {
     paddle2.ySpeed = 80;
     ball.xSpeed = 20;
+    hard_button.removeEventListener('click', hard);
+    setTimeout(() => {
+        hard_button.addEventListener('click', hard);
+    }, 4000);
 }
 
-btnsDiv_div.style.left = canvas.width / 4 - 20 + 'px';
+easy_button.addEventListener('click', easy);
+normal_button.addEventListener('click', normal);
+hard_button.addEventListener('click', hard);
 
 const game = setInterval(() => {
     draw();
